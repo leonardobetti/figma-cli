@@ -35,7 +35,7 @@ program
       };
 
       // Adjust multipliers based on which size is the source
-      let multipliers = {};
+      const multipliers = {};
       const baseConfig = sizeConfig[baseSize];
       for (const [size, cfg] of Object.entries(sizeConfig)) {
         multipliers[size] = {

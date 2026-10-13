@@ -2275,7 +2275,7 @@ export class FigmaClient {
         return m;
       }
       const key = body.toLowerCase();
-      return Object.prototype.hasOwnProperty.call(named, key) ? named[key] : m;
+      return  Object.hasOwn(named, key) ? named[key] : m;
     });
   }
 
@@ -2428,7 +2428,7 @@ export class FigmaClient {
     const stops = [];
     stopParts.forEach((sp, i) => {
       const posMatch = sp.match(/(-?\d+(?:\.\d+)?)%\s*$/);
-      let pos = posMatch ? parseFloat(posMatch[1]) / 100 : i / (stopParts.length - 1);
+      const pos = posMatch ? parseFloat(posMatch[1]) / 100 : i / (stopParts.length - 1);
       const colorStr = posMatch ? sp.slice(0, posMatch.index).trim() : sp.trim();
       let color;
       const rgbaMatch = colorStr.match(/^rgba?\(([^)]+)\)$/);
@@ -3808,7 +3808,7 @@ export class FigmaClient {
         parseInt(hex.slice(1, 3), 16) / 255,
         parseInt(hex.slice(3, 5), 16) / 255,
         parseInt(hex.slice(5, 7), 16) / 255
-      ].map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+      ].map(c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
       return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
     };
 

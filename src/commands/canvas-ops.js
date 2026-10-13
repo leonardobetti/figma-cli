@@ -22,7 +22,7 @@ canvas
   .description('Show canvas info (bounds, element count, free space)')
   .action(() => {
     checkConnection();
-    let code = `(function() {
+    const code = `(function() {
 const children = figma.currentPage.children;
 if (children.length === 0) {
   return JSON.stringify({ empty: true, message: 'Canvas is empty', nextX: 0, nextY: 0 });
@@ -54,7 +54,7 @@ canvas
   .option('-d, --direction <dir>', 'Direction: right, below', 'right')
   .action((options) => {
     checkConnection();
-    let code = `
+    const code = `
 const children = figma.currentPage.children;
 const gap = ${options.gap};
 if (children.length === 0) {
@@ -87,7 +87,7 @@ bind
   .action((varName, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 const vars = await figma.variables.getLocalVariablesAsync();
 const v = vars.find(v => v.name === ${JSON.stringify(varName)} || v.name.endsWith(${JSON.stringify('/' + varName)}));
@@ -111,7 +111,7 @@ bind
   .action((varName, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 const vars = await figma.variables.getLocalVariablesAsync();
 const v = vars.find(v => v.name === ${JSON.stringify(varName)} || v.name.endsWith(${JSON.stringify('/' + varName)}));
@@ -136,7 +136,7 @@ bind
   .action((varName, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 const vars = await figma.variables.getLocalVariablesAsync();
 const v = vars.find(v => v.name === ${JSON.stringify(varName)} || v.name.endsWith(${JSON.stringify('/' + varName)}));
@@ -157,7 +157,7 @@ bind
   .action((varName, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 const vars = await figma.variables.getLocalVariablesAsync();
 const v = vars.find(v => v.name === ${JSON.stringify(varName)} || v.name.endsWith(${JSON.stringify('/' + varName)}));
@@ -182,7 +182,7 @@ bind
     const sides = options.side === 'all'
       ? ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']
       : [`padding${options.side.charAt(0).toUpperCase() + options.side.slice(1)}`];
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 const vars = await figma.variables.getLocalVariablesAsync();
 const v = vars.find(v => v.name === ${JSON.stringify(varName)} || v.name.endsWith(${JSON.stringify('/' + varName)}));
@@ -203,7 +203,7 @@ bind
   .option('-t, --type <type>', 'Filter: COLOR, FLOAT')
   .action((options) => {
     checkConnection();
-    let code = `(async () => {
+    const code = `(async () => {
 const vars = await figma.variables.getLocalVariablesAsync();
 const filtered = vars${options.type ? `.filter(v => v.resolvedType === ${JSON.stringify(options.type.toUpperCase())})` : ''};
 return filtered.map(v => v.resolvedType.padEnd(8) + ' ' + v.name).join('\\n') || 'No variables';
@@ -223,7 +223,7 @@ sizing
   .option('-a, --axis <axis>', 'Axis: both, h, v', 'both')
   .action((options) => {
     checkConnection();
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -244,7 +244,7 @@ sizing
   .option('-a, --axis <axis>', 'Axis: both, h, v', 'both')
   .action((options) => {
     checkConnection();
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -264,7 +264,7 @@ sizing
   .action((width, height) => {
     checkConnection();
     const h = height || width;
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -291,7 +291,7 @@ program
     if (!r) { right = value; bottom = value; left = value; }
     else if (!b) { bottom = value; left = r; }
     else if (!l) { left = r; }
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -312,7 +312,7 @@ program
   .description('Set auto-layout gap')
   .action((value) => {
     checkConnection();
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -330,7 +330,7 @@ program
     checkConnection();
     const map = { start: 'MIN', center: 'CENTER', end: 'MAX', stretch: 'STRETCH' };
     const val = map[alignment.toLowerCase()] || 'CENTER';
-    let code = `
+    const code = `
 const nodes = figma.currentPage.selection;
 if (nodes.length === 0) 'No selection';
 else {
@@ -363,13 +363,13 @@ program
   .action((nodeId) => {
     checkConnection();
     if (nodeId) {
-      let code = `(async () => {
+      const code = `(async () => {
 const node = await figma.getNodeByIdAsync(${JSON.stringify(nodeId)});
 if (node) { node.remove(); return 'Deleted: ${nodeId}'; } else { return 'Node not found: ${nodeId}'; }
 })()`;
       figmaUse(`eval "${code.replace(/"/g, '\\"').replace(/\n/g, ' ')}"`, { silent: false });
     } else {
-      let code = `
+      const code = `
 const sel = figma.currentPage.selection;
 if (sel.length === 0) 'No selection';
 else { const count = sel.length; sel.forEach(n => n.remove()); 'Deleted ' + count + ' elements'; }
@@ -388,13 +388,13 @@ program
   .action((nodeId, options) => {
     checkConnection();
     if (nodeId) {
-      let code = `(async () => {
+      const code = `(async () => {
 const node = await figma.getNodeByIdAsync(${JSON.stringify(nodeId)});
 if (node) { const clone = node.clone(); clone.x += ${options.offset}; clone.y += ${options.offset}; figma.currentPage.selection = [clone]; return 'Duplicated: ' + clone.id; } else { return 'Node not found'; }
 })()`;
       figmaUse(`eval "${code.replace(/"/g, '\\"').replace(/\n/g, ' ')}"`, { silent: false });
     } else {
-      let code = `
+      const code = `
 const sel = figma.currentPage.selection;
 if (sel.length === 0) 'No selection';
 else { const clones = sel.map(n => { const c = n.clone(); c.x += ${options.offset}; c.y += ${options.offset}; return c; }); figma.currentPage.selection = clones; 'Duplicated ' + clones.length + ' elements'; }
@@ -523,7 +523,7 @@ set
   .action((value, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `
+    const code = `
 ${nodeSelector}
 if (nodes.length === 0) 'No node found';
 else { nodes.forEach(n => { if ('cornerRadius' in n) n.cornerRadius = ${value}; }); 'Radius set on ' + nodes.length + ' elements'; }
@@ -539,7 +539,7 @@ set
   .action((width, height, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `
+    const code = `
 ${nodeSelector}
 if (nodes.length === 0) 'No node found';
 else { nodes.forEach(n => { if ('resize' in n) n.resize(${width}, ${height}); }); 'Size set on ' + nodes.length + ' elements'; }
@@ -556,7 +556,7 @@ set
   .action(async (factor, options) => {
     await checkConnection();
     // Accept "1.2", "1.2x", "120%"
-    let raw = String(factor).trim().toLowerCase();
+    const raw = String(factor).trim().toLowerCase();
     let f;
     if (raw.endsWith('%')) f = parseFloat(raw.slice(0, -1)) / 100;
     else if (raw.endsWith('x')) f = parseFloat(raw.slice(0, -1));
@@ -610,7 +610,7 @@ set
   .action((x, y, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `
+    const code = `
 ${nodeSelector}
 if (nodes.length === 0) 'No node found';
 else { nodes.forEach(n => { n.x = ${x}; n.y = ${y}; }); 'Position set on ' + nodes.length + ' elements'; }
@@ -626,7 +626,7 @@ set
   .action((value, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `
+    const code = `
 ${nodeSelector}
 if (nodes.length === 0) 'No node found';
 else { nodes.forEach(n => { if ('opacity' in n) n.opacity = ${value}; }); 'Opacity set on ' + nodes.length + ' elements'; }
@@ -642,7 +642,7 @@ set
   .action((name, options) => {
     checkConnection();
     const nodeSelector = buildNodeSelector(options);
-    let code = `
+    const code = `
 ${nodeSelector}
 if (nodes.length === 0) 'No node found';
 else { nodes.forEach(n => { n.name = ${JSON.stringify(name)}; }); 'Renamed ' + nodes.length + ' elements to ' + ${JSON.stringify(name)}; }
@@ -1249,7 +1249,7 @@ program
   .option('-c, --cols <n>', 'Number of columns (0 = single row)', '0')
   .action((options) => {
     checkConnection();
-    let code = `
+    const code = `
 const frames = figma.currentPage.children.filter(n => n.type === 'FRAME' || n.type === 'COMPONENT');
 if (frames.length === 0) 'No frames to arrange';
 else {
@@ -1286,7 +1286,7 @@ program
     const nodeSelector = nodeId
       ? `const node = await figma.getNodeByIdAsync(${JSON.stringify(nodeId)});`
       : `const node = figma.currentPage.selection[0];`;
-    let code = `(async () => {
+    const code = `(async () => {
 ${nodeSelector}
 if (!node) return 'No node found';
 return JSON.stringify({
@@ -1320,7 +1320,7 @@ program
   .option('-l, --limit <n>', 'Limit results', '20')
   .action((name, options) => {
     checkConnection();
-    let code = `(function() {
+    const code = `(function() {
 const results = [];
 function search(node) {
   if (node.name && node.name.toLowerCase().includes(${JSON.stringify(name.toLowerCase())})) {

@@ -541,7 +541,7 @@ async function connectBrowser(config) {
   const port = getCdpPort();
   const profileDir = join(CONFIG_DIR, 'chrome-profile');
 
-  let state = await probeBrowserCdp(port);
+  const state = await probeBrowserCdp(port);
 
   if (!state.up) {
     // No debug endpoint yet — launch a browser for the user (best effort).

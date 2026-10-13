@@ -64,7 +64,7 @@ create
     const fillCode = generateFillCode(options.fill, 'rect');
     const strokeCode = options.stroke ? generateStrokeCode(options.stroke, 'rect') : null;
 
-    let code = `
+    const code = `
 (async () => {
 ${usesVars ? varLoadingCode() : ''}
 ${useSmartPos ? smartPosCode(100) : `const smartX = ${options.x};`}
@@ -105,7 +105,7 @@ create
     const fillCode = generateFillCode(options.fill, 'ellipse');
     const strokeCode = options.stroke ? generateStrokeCode(options.stroke, 'ellipse') : null;
 
-    let code = `
+    const code = `
 (async () => {
 ${usesVars ? varLoadingCode() : ''}
 ${useSmartPos ? smartPosCode(100) : `const smartX = ${options.x};`}
@@ -144,7 +144,7 @@ create
 
     const fillCode = generateFillCode(options.color, 'text');
 
-    let code = `
+    const code = `
 (async function() {
   ${usesVars ? varLoadingCode() : ''}
   ${useSmartPos ? smartPosCode(options.spacing) : `const smartX = ${options.x};`}
@@ -184,7 +184,7 @@ create
 
     const strokeCode = generateStrokeCode(options.color, 'line', options.weight);
 
-    let code = `
+    const code = `
 (async () => {
 ${usesVars ? varLoadingCode() : ''}
 ${useSmartPos ? smartPosCode(options.spacing) : `const smartX = ${options.x1};`}
@@ -208,7 +208,7 @@ create
   .action((name) => {
     checkConnection();
     const compName = name || 'Component';
-    let code = `
+    const code = `
 const sel = figma.currentPage.selection;
 if (sel.length === 0) 'No selection';
 else if (sel.length === 1) {
@@ -233,7 +233,7 @@ create
   .action((name) => {
     checkConnection();
     const groupName = name || 'Group';
-    let code = `
+    const code = `
 const sel = figma.currentPage.selection;
 if (sel.length < 2) 'Select 2+ elements to group';
 else {
@@ -267,7 +267,7 @@ create
 
     const fillCode = options.fill ? generateFillCode(options.fill, 'frame') : null;
 
-    let code = `
+    const code = `
 (async () => {
 ${usesVars ? varLoadingCode() : ''}
 ${useSmartPos ? smartPosCode(options.spacing) : `const smartX = ${options.x};`}

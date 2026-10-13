@@ -268,7 +268,7 @@ program
 
       // Calculate smart position if not specified
       let posX = options.x;
-      let posY = options.y !== undefined ? options.y : 0;
+      const posY = options.y !== undefined ? options.y : 0;
 
       if (!options.parent && options.x === undefined && options.smartPosition !== false) {
         posX = getNextFreeX();
