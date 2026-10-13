@@ -187,7 +187,7 @@ export function killFigmaApp() {
 let findWindowsFigmaPath, findWindowsFigmaExe;
 
 if (PLATFORM === 'win32') {
-  findWindowsFigmaPath = function() {
+  findWindowsFigmaPath = () => {
     const localAppData = process.env.LOCALAPPDATA;
     if (!localAppData) return null;
 
@@ -213,7 +213,7 @@ if (PLATFORM === 'win32') {
     return null;
   };
 
-  findWindowsFigmaExe = function() {
+  findWindowsFigmaExe = () => {
     const localAppData = process.env.LOCALAPPDATA;
     if (!localAppData) return null;
 

@@ -131,7 +131,7 @@ function detectWrapperSplit(jsx) {
   // a separator (space, dash, slash, underscore) before the suffix so that
   // distinct names like "TabBar" / "Panel" stay distinct.
   const bases = childNames.map(n => {
-    let b = n.replace(/[\s\-/_][A-Za-z0-9]+$/, ''); // "Button 1" → "Button", "Btn/Primary" → "Btn"
+    const b = n.replace(/[\s\-/_][A-Za-z0-9]+$/, ''); // "Button 1" → "Button", "Btn/Primary" → "Btn"
     return (b || n).toLowerCase().trim();
   });
   // If children have more than one distinct base, this is a composite
@@ -647,7 +647,7 @@ function figmaEvalSync(code) {
     try {
       // Wrap code to ensure return value for plugin mode
       // CDP returns last expression automatically, plugin needs explicit return
-      let wrappedCode = code.trim();
+      const wrappedCode = code.trim();
       // Don't wrap if already an IIFE or starts with return - plugin handles these
       // For simple expressions and multi-statement code, just pass through
       // The plugin will add return to the last statement

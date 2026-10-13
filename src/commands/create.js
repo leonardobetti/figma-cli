@@ -37,7 +37,7 @@ create
 
     const fillCode = options.fill ? generateFillCode(options.fill, 'frame') : null;
 
-    let code = `
+    const code = `
 (async () => {
 ${usesVars ? varLoadingCode() : ''}
 ${useSmartPos ? smartPosCode(options.gap) : `const smartX = ${options.x};`}

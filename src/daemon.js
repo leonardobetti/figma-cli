@@ -144,7 +144,7 @@ const HEALTH_CACHE_MS = 30000; // Cache health for 30 seconds (reduces overhead)
 
 // Plugin Client (Safe Mode)
 let pluginWs = null;
-let pluginPendingRequests = new Map();
+const pluginPendingRequests = new Map();
 let pluginMsgId = 0;
 
 // ============ CDP MODE (YOLO) ============

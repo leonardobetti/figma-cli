@@ -63,7 +63,7 @@ function oklchToHex(L, C, H) {
     const cClamped = clamp01(c);
     return cClamped <= 0.0031308
       ? 12.92 * cClamped
-      : 1.055 * Math.pow(cClamped, 1 / 2.4) - 0.055;
+      : 1.055 * cClamped ** (1 / 2.4) - 0.055;
   };
 
   return '#' + [linR, linG, linB].map(v => toHexCh(gamma(v))).join('');
@@ -153,7 +153,7 @@ function extractDeclarations(css) {
   // We track a stack of { selector, isTheme, isDark }.
 
   const blockStack = []; // stack of { selector, isTheme, isDark }
-  let i = 0;
+  const i = 0;
   const len = css.length;
 
   // Helper: get text before the previous '{' to extract selector
@@ -163,7 +163,7 @@ function extractDeclarations(css) {
     // skip whitespace
     while (j >= 0 && /\s/.test(css[j])) j--;
     // collect until previous ';' or '{' or '}'
-    let end = j;
+    const end = j;
     while (j >= 0 && css[j] !== '{' && css[j] !== '}' && css[j] !== ';') j--;
     return css.slice(j + 1, end + 1).trim();
   }
@@ -190,7 +190,7 @@ function extractDeclarations(css) {
 
     if (ch === '{') {
       // Find the selector text between previous block-ending char and here
-      let sel = getSelectorBefore(pos);
+      const sel = getSelectorBefore(pos);
       // Remove @layer wrappers from selector (they don't affect dark detection)
       const isTheme = /^@theme\b/.test(sel);
       const isDark = /\.dark\b|\.dark$|\[data-theme=["']dark["']\]|\[data-mode=["']dark["']\]/.test(sel);
@@ -209,12 +209,12 @@ function extractDeclarations(css) {
     if (ch === '-' && stripped[pos + 1] === '-') {
       const declStart = pos;
       // Find the end of this declaration (next ';' or '}')
-      let colonPos = stripped.indexOf(':', pos);
+      const colonPos = stripped.indexOf(':', pos);
       if (colonPos === -1) { pos++; continue; }
       const name = stripped.slice(pos + 2, colonPos).trim();
 
       // Find value end: next ';' not inside parens, or '}'
-      let valStart = colonPos + 1;
+      const valStart = colonPos + 1;
       let valEnd = valStart;
       let depth = 0;
       while (valEnd < stripped.length) {
@@ -371,7 +371,6 @@ export function parseCss(cssText) {
     if (hex) {
       resolved.set(name, hex);
       tokens.color[name] = hex;
-      continue;
     }
   }
 
